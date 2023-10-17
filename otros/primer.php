@@ -12,12 +12,14 @@
 
             $var1= "4545";
             echo $var1."4";
-        
+            echo "<br>";
             $var2=5;
             $var1= &$var2;// & clonacion constante  
             echo $var1;
+            echo "<br>";
             $var2=3;
             echo $var1;
+            echo "<br>";
 
             $var4= array("1", "2");
             $var5=$var4[1];
