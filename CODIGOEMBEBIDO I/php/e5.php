@@ -5,9 +5,13 @@ $matriz1= array(
                 array(0,1)
             );
 
-$matriz2= array(array(0,1), array(1,0));
+$matriz2= array(
+                array(0,1),
+                array(1,0));
 
-$resulMatriz= array(array(), array());
+$resulMatriz= array(
+                array(), 
+                array());
 
 
 
