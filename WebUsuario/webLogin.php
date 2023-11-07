@@ -31,12 +31,16 @@
 </head>
 
 <body>
+    <?php
+    session_start();
+    session_destroy();
+    ?>
     <div class="container-fluid mx-auto pt-5">
 
         <div class="container bg-trans h-50 w-25 text-center mt-5 login pt-3">
             <h1 class=" text-white mb-5  ">Login</h1>
 
-            <form action="archivophp.php" method="post">
+            <form action="archivophp.php" method="post"><!-- formulario que envia los valores a archivo.php-->
 
 
                 <div class="input-group mb-3 w-50 mx-auto mb-5">
@@ -53,6 +57,16 @@
 
                 <input class="btn btn-dark" type="submit" name="submit" value="Logear">
             </form>
+
+            <h3 class=" text-white">Session</h3>
+            <p class=" text-white">Las sesiones son muy importantes a la hora de trabajar con entornos personalizados,
+                 estas son espacios el cual se guarda informacion de el usuario mientras no se destruya
+                  aquella sesion, podemos guardar aquella informacion en el array asociativo $_SESSION[],
+                   con las sesiones podemos seguir teniendo lo svalores guardados pasando de navegador</p>
+                   <h3 class=" text-white">Cookies</h3>
+            <p class=" text-white">Las cookies es informacion el cual se almacenan preferencias e informacion
+                 del usuario para mostrar contenido personalizado para el, aquellas cookies se guarda en el
+                  dispositivo del usuario</p>
 
         </div>
 
