@@ -6,15 +6,15 @@ class Consultas
         $host = "localhost";
         $user = "root";
         $password = "";
-        $conexion = mysqli_connect($host, $user, $password) or die("Conexion incorrecta");
+        $conexion = mysqli_connect($host, $user, $password) or die("Conexion incorrecta");//conexion a el servidor
 
 
 
-        $sql = "CREATE DATABASE IF NOT EXISTS usuarioBD";
+        $sql = "CREATE DATABASE IF NOT EXISTS usuarioBD";//consulta aql para ejecutar
 
-        $tablacrear = "CREATE TABLE IF NOT EXISTS USUARIOS( USUARIO varchar(30) PRIMARY KEY, CLAVE varchar(1000));";
+        $tablacrear = "CREATE TABLE IF NOT EXISTS USUARIOS( USUARIO varchar(30) PRIMARY KEY, CLAVE varchar(1000));";//consulta aql para ejecutar
 
-        $tablamusica = "CREATE TABLE IF NOT EXISTS MUSICA( ID INT AUTO_INCREMENT PRIMARY KEY, CANCION varchar(100), AUTOR VARCHAR(100), GENERO VARCHAR(20));";
+        $tablamusica = "CREATE TABLE IF NOT EXISTS MUSICA( ID INT AUTO_INCREMENT PRIMARY KEY, CANCION varchar(100), AUTOR VARCHAR(100), GENERO VARCHAR(20));";//consulta aql para ejecutar
 
         mysqli_query($conexion, $sql) or die("BaseDeDatos no creada");
 
@@ -36,19 +36,22 @@ class Consultas
         $user = "root";
         $password = "";
         $database = "usuarioBD";
-        $conexion = mysqli_connect($host, $user, $password, $database) or die("Conexion incorrecta");
-        $HashPassword = password_hash($clave, PASSWORD_DEFAULT);
+
+        $conexion = mysqli_connect($host, $user, $password, $database) or die("Conexion incorrecta");//conexion a la base de datos
+
+        $HashPassword = password_hash($clave, PASSWORD_DEFAULT);//funcion para hashear una contraseña de manera default
 
         $consultainsertar = "INSERT INTO USUARIOS VALUES(?,?)";
 
-        $stmtInsertar = mysqli_prepare($conexion, $consultainsertar);
+        $stmtInsertar = mysqli_prepare($conexion, $consultainsertar);//prepara consulta para ser utilizada
 
-        mysqli_stmt_bind_param($stmtInsertar, "ss", $usuario, $HashPassword);
+        mysqli_stmt_bind_param($stmtInsertar, "ss", $usuario, $HashPassword);//pone los parametros en la consulata preparada
 
-        mysqli_stmt_execute($stmtInsertar);
+        mysqli_stmt_execute($stmtInsertar);//ejecutar la consulta preparada
 
-        mysqli_stmt_close($stmtInsertar);
-        mysqli_close($conexion);
+        mysqli_stmt_close($stmtInsertar);//cerrar consulta
+        mysqli_close($conexion);//cerrar conexion
+
     }
 
 
@@ -62,14 +65,15 @@ class Consultas
         $conexion = mysqli_connect($host, $user, $password, $database) or die("Conexion incorrecta");
         $Existe = false;
 
+
         $consultausuario = "SELECT * FROM USUARIOS WHERE USUARIO=?";
-        $stmtUsuario = mysqli_prepare($conexion, $consultausuario) or die("Error");
+        $stmtUsuario = mysqli_prepare($conexion, $consultausuario) or die("Error");//prepara consulta para ser utilizada
         mysqli_stmt_bind_param($stmtUsuario, "s", $usuario) or die("Error");
         mysqli_stmt_execute($stmtUsuario);
 
-        mysqli_stmt_store_result($stmtUsuario);
+        mysqli_stmt_store_result($stmtUsuario);//guardar el resultado en memoria y ser usado
 
-        if (mysqli_stmt_num_rows($stmtUsuario) > 0) {
+        if (mysqli_stmt_num_rows($stmtUsuario) > 0) {//funcion para saber cuantas filas tiene el resultado
             $Existe = true;
         }
         mysqli_stmt_close($stmtUsuario);
@@ -103,11 +107,13 @@ class Consultas
         // Ejecutar la consulta
         mysqli_stmt_execute($stmt);
 
-        mysqli_stmt_bind_result($stmt, $columnaHash);
-        // Obtener resultados
-        mysqli_stmt_fetch($stmt);
+        mysqli_stmt_bind_result($stmt, $columnaHash,);//asignarle un nombre a la zelda de cada valor para usarlo
 
-        if (password_verify($clave, $columnaHash)) {
+
+        // Obtener resultados
+        mysqli_stmt_fetch($stmt);//ir fila por fila en el resultado
+        
+        if (password_verify($clave, $columnaHash)) {//comprobar si la contraseña es igual al hasheo 
             $Existe = true;
         }
 
@@ -117,35 +123,7 @@ class Consultas
 
         return $Existe;
     }
-    public static function recolectarDatos($usuario)
-    {
-        $host = "localhost";
-        $user = "root";
-        $password = "";
-        $database = "usuarioBD";
-
-        $conexion = mysqli_connect($host, $user, $password, $database) or die("Conexion incorrecta");
-        $consulta = "SELECT * FROM USUARIOS WHERE USUARIO=?";
-        $stmtRecolectar = mysqli_prepare($conexion, $consulta);
-        mysqli_stmt_bind_param($stmtRecolectar, "s", $usuario);
-        mysqli_stmt_execute($stmtRecolectar);
-        mysqli_stmt_store_result($stmtRecolectar);
-
-        mysqli_stmt_bind_result($stmtRecolectar, $columna1, $columnaNN, $columna3, $columna4, $columna5, $columna6, $columna7);
-
-        mysqli_stmt_fetch($stmtRecolectar);
-
-        $_SESSION["usuario"] = $columna1;
-        $_SESSION["email"] = $columna3;
-        $_SESSION["nombre"] = $columna4;
-        $_SESSION["telefono"] = $columna5;
-        $_SESSION["direccion"] = $columna6;
-        $_SESSION["sexo"] = $columna7;
-
-        mysqli_stmt_close($stmtRecolectar);
-        mysqli_close($conexion);
-    }
-
+    
 
     public static function añadirmusica($musica, $autor, $genero)
     {
